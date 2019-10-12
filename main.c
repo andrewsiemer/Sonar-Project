@@ -2,7 +2,7 @@
 // main.c
 // 
 // @author Andrew Siemer <andrew.siemer@eagles.oc.edu>
-// @version 10.12.19
+// @version 10.12.19 (build 1)
 //
 
 #include <p30f3013.h>
