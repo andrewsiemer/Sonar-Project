@@ -2,7 +2,6 @@
 .DS_Store
 ._.DS_Store
 ._.gitignore
-Makefile
 
 # Ignore build files
 build/
