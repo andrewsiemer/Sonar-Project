@@ -1,20 +1,27 @@
-/* utilities.c - Useful functions for programming the
- * dsPIC30F3013.
- * Author: Steven Bell <steven.bell@student.oc.edu>
- * Based on work by Nick Little <nicklaus.little@alum.oc.edu>
- * Date: 19 December 2008
- * Last revision: 1 January 2009, SB
- * Revised: 16 December 2009, PS to add Halt function
- */
+// utilities.c
+// @description Useful functions for programming the dsPIC30F3013
+// 
+// @authors Andrew Siemer <andrew.siemer@eagles.oc.edu>,
+// @version 10.19.19 
+//
 
 #include <uart.h>
 #include <stdarg.h>
 #include <adc12.h>
 #include <p30fxxxx.h> //?
+
+#include <stdio.h> //to resolve printf error
+#include <p30f3013.h>
+#include "definitions.h"
+#include "aliases.h"
+#include "utilities.h"
+#include <stdint.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <libpic30.h>
 
 #include "utilities.h"
-#include "stdio.h"
 
 _FOSC(0xC100); // Required for the clock to operate properly
 _FWDT(0x003F); // Disable the watchdog
@@ -46,8 +53,7 @@ void pause(unsigned int time){
  * is running which requires the ADC hardware.
  * Returns an int with a maximum value of 2^12 = 4096.
  */
-int getAnalogValue(unsigned int channel)
-{
+int getAnalogValue(unsigned int channel) {
   int result;
 
   // Turn off the ADC before we start setting the registers
@@ -131,82 +137,81 @@ int getAnalogValue(unsigned int channel)
  * not really a 'halt'... but the program won't
  * reset either!
  */
-void halt()
-{
+void halt() {
 	while(1)
 		;
 }
 
 
-/* To use this function and readPinTimer, connect an input to pin 9.  After
- * calling startPinTimer, Timer 1 will count on each instruction cycle that
- * pin 9 is high.
- */
-void startPinTimer12(void)
-{
-  // Reset Timer 1
-  TMR1 = 0;
-
-  // Set up the timer to use "gated accumulation mode"
-  // See section 12.4.5 of the dsPIC30F manual for more info.
-  T1CONbits.TGATE = 1;
-
-  // Use internal clock as the timer source
-  T1CONbits.TCS = 0;
-
-  // Turn on the timer
-  T1CONbits.TON = 1;
-
+void LCD_GotoXY(uint8_t const ROW, uint8_t const COLUMN) {
+  uint8_t address;
+  switch (ROW)
+  {
+    case 1: address = 0x00; break;
+    case 2: address = 0x40; break;
+    case 3: address = 0x14; break;
+    case 4: address = 0x54; break;
+    default: address = 0x00; break;
+  }
+  LCD_RS = LOW;
+  LCD_RW = LOW;
+  LCD_Pulse_Char(0x80 | (address + COLUMN));
+  
 }
 
-void stopPinTimer12(void)
-{
-	T1CONbits.TON = 0;
+void LCD_Init(void) {
+  __delay32(100);
+  LCD_RS = LOW;
+  LCD_Pulse_Nibble(0x03); // wake up
+  __delay32(80);
+  //__delay_us(80);
+  LCD_Pulse_Nibble(0x03); // no really, wake up
+  __delay32(80);
+  LCD_Pulse_Nibble(0x03); // I mean it, WAKE UP!
+  __delay32(80);
+  LCD_Pulse_Nibble(0x02); // 4-bit interface
+  __delay32(80);
+  LCD_Pulse_Char(0x28); // 4bit, 2line, 5x8 dots
+  LCD_Pulse_Char(0x04); 
+  LCD_Pulse_Char(0x85);
+  LCD_Pulse_Char(0x06);
+  LCD_Pulse_Char(0x02);
+  __delay32(3);
+  LCD_Pulse_Char(0x0C);
+  LCD_Pulse_Char(0x01); // clear display
+  __delay32(6);
+  
 }
 
-/* Use this function to read the the number of instruction clock cycles in the
- * Timer 1 register.  When called after startPinTimer, it will return the number
- * of cycles that pin 9 was high.
- */
-int readPinTimer12(void)
-{
-  return(TMR1);
-}
-/* To use this function and readPinTimer, connect an input to pin 9.  After
- * calling startPinTimer, Timer 1 will count on each instruction cycle that
- * pin 9 is high.
- */
-
-void startPinTimer11(void)
-{
-  // Reset Timer 1
-  TMR2 = 0;
-
-  // Set up the timer to use "gated accumulation mode"
-  // See section 12.4.5 of the dsPIC30F manual for more info.
-  T2CONbits.TGATE = 1;
-
-  // Use internal clock as the timer source
-  T2CONbits.TCS = 0;
-
-  // Turn on the timer
-  T2CONbits.TON = 1;
-
+void LCD_Pulse_Char(uint8_t const CHARACTER) {
+  LCD_Pulse_Nibble((CHARACTER & 0xF0) >> 4);
+  LCD_Pulse_Nibble(CHARACTER & 0x0F);
+  __delay32(50);
 }
 
-void stopPinTimer11(void)
-{
-	T2CONbits.TON = 0;
+void LCD_Pulse_Nibble(uint8_t const NIBBLE) {
+  LCD_DB7 = (NIBBLE & 0x08) > 0;
+  LCD_DB6 = (NIBBLE & 0x04) > 0;
+  LCD_DB5 = (NIBBLE & 0x02) > 0;
+  LCD_DB4 = (NIBBLE & 0x01) > 0;
+  LCD_EN = 1;
+  __delay32(50);
+  LCD_EN = 0;
+  __delay32(50);
 }
 
-int readPinTimer11(void)
-{
-  return(TMR2);
+void LCD_Write_String (char const * TEXT) {
+  uint16_t loop = 0;
+  LCD_RS = HIGH;
+  LCD_RW = LOW;
+
+  for (loop = 0; TEXT[loop] != '\0'; loop++)
+  {
+    LCD_Pulse_Char(TEXT[loop]);
+  }
 }
-
-
-
-/* Use this function to read the the number of instruction clock cycles in the
- * Timer 1 register.  When called after startPinTimer, it will return the number
- * of cycles that pin 9 was high.
- */
+  
+void LCD_Write_XY (uint8_t const ROW, uint8_t const COLUMN, char const * TEXT) {
+  LCD_GotoXY(ROW, COLUMN);
+  LCD_Write_String(TEXT);
+}

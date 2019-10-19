@@ -45,6 +45,47 @@
 #define pin5Type ADPCFGbits.PCFG3 //pin 5
 #define pin6Type ADPCFGbits.PCFG4 //pin 6
 #define pin7Type ADPCFGbits.PCFG5 //pin 7
+#include <stdio.h> //to resolve printf error
+#include <p30f3013.h>
+
+
+//Aliases to refer to the pins when setting them as inputs or outputs
+//The TRISx registers control the pin direction (1 makes it an input)
+#define pin2Direction TRISBbits.TRISB0 //pin 2
+#define pin3Direction TRISBbits.TRISB1 //pin 3
+#define pin4Direction TRISBbits.TRISB2 //pin 4
+#define pin5Direction TRISBbits.TRISB3 //pin 5
+#define pin6Direction TRISBbits.TRISB4 //pin 6
+#define pin7Direction TRISBbits.TRISB5 //pin 7
+
+#define pin10Direction TRISCbits.TRISC15 //pin 10
+#define pin11Direction TRISCbits.TRISC13 //pin 11
+#define pin12Direction TRISCbits.TRISC14 //pin 12
+
+#define pin14Direction TRISDbits.TRISD9 //pin 14
+#define pin15Direction TRISDbits.TRISD8 //pin 15
+
+#define pin16Direction TRISFbits.TRISF6 //pin 16
+#define pin21Direction TRISFbits.TRISF5 //pin 21
+#define pin22Direction TRISFbits.TRISF4 //pin 22
+
+#define pin23Direction TRISBbits.TRISB9 //pin 23
+#define pin24Direction TRISBbits.TRISB8 //pin 24
+#define pin25Direction TRISBbits.TRISB7 //pin 25
+#define pin26Direction TRISBbits.TRISB6 //pin 26
+
+
+//Aliases for setting the TRISx bits above
+#define INPUT 1
+#define OUTPUT 0
+
+//Aliases to set the pins as analog or digital
+#define pin2Type ADPCFGbits.PCFG0 //pin 2
+#define pin3Type ADPCFGbits.PCFG1 //pin 3
+#define pin4Type ADPCFGbits.PCFG2 //pin 4
+#define pin5Type ADPCFGbits.PCFG3 //pin 5
+#define pin6Type ADPCFGbits.PCFG4 //pin 6
+#define pin7Type ADPCFGbits.PCFG5 //pin 7
 
 #define pin23Type ADPCFGbits.PCFG9 //pin 23
 #define pin24Type ADPCFGbits.PCFG8 //pin 24

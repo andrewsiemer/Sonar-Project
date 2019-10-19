@@ -1,39 +1,34 @@
-/* utilities.h - Header file for utilities.c
- * Author: Steven Bell <steven.bell@student.oc.edu>
- * Based on work by Nick Little <nicklaus.little@alum.oc.edu>
- * Date: 19 December 2008
- * Last revision: 14 January 2009, SB
- * Revised: 16 December 2009, PS to add Halt function
- */
+// utilities.h
+// @description Useful functions for programming the dsPIC30F3013
+// 
+// @authors Andrew Siemer <andrew.siemer@eagles.oc.edu>,
+// @version 10.19.19 
+//
+
+#include <stdint.h>
 
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
 /* Serial port settings for debugging */
-// Set the baud at 38400
-#define DEBUG_BRG 2
- //Maximum length of the debug string
-#define DEBUG_MAX_CHARS 150
+#define DEBUG_BRG 2          // Set the baud at 38400
+#define DEBUG_MAX_CHARS 150  //Maximum length of the debug string
 
 /* Debugging functions */
-//Initializes the UART for serial communication
-void initializeUART(void);
-
+void initializeUART(void);  //Initializes the UART for serial communication
 
 /* ADC functions */
 int getAnalogValue(unsigned int channel);
 
 
-/* Timer settings */
-
 /* Timer functions */
 void pause(unsigned int);
-void startPinTimer11(void);
-void startPinTimer12(void);
-int readPinTimer11(void);
-int readPinTimer12(void);
-void stopPinTimer12(void);
-void stopPinTimer11(void);
+void LCD_GotoXY(uint8_t const ROW, uint8_t const COLUMN);
+void LCD_Init(void);
+void LCD_Pulse_Char(uint8_t const CHARACTER);
+void LCD_Pulse_Nibble(uint8_t const NIBBLE);
+void LCD_Write_String (char const * TEXT);
+void LCD_Write_XY (uint8_t const ROW, uint8_t const COLUMN, char const * TEXT);
 void halt();
 
 #endif
