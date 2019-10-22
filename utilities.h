@@ -1,8 +1,12 @@
 // utilities.h
-// @description Useful functions for programming the dsPIC30F3013
+// @description Useful functions for programming the dsPIC30F3013.
 // 
 // @authors Andrew Siemer <andrew.siemer@eagles.oc.edu>,
-// @version 10.19.19 
+// @version 10.22.19 
+//
+// Based on a version from Engineering Fundamentals [ENGR-1242]
+// @credit Steven Bell <steven.bell@student.oc.edu>,
+//         Nick Little <nicklaus.little@alum.oc.edu>
 //
 
 #include <stdint.h>
@@ -29,6 +33,7 @@ void LCD_Pulse_Char(uint8_t const CHARACTER);
 void LCD_Pulse_Nibble(uint8_t const NIBBLE);
 void LCD_Write_String (char const * TEXT);
 void LCD_Write_XY (uint8_t const ROW, uint8_t const COLUMN, char const * TEXT);
-void halt();
+void LCD_Clear(void);
+void halt(void);
 
 #endif

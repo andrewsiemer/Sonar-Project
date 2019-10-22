@@ -1,10 +1,12 @@
-/* aliases.h - Header file with definitions to simplify programming the
- * dsPIC30F3013.
- * Author: Steven Bell <steven.bell@student.oc.edu>
- * Date: 18 December 2008
- * Last revision: 14 January 2009, SB
- * 	              May, 2009 - Pat Smith, updated for actual pin numbers
- */
+// aliases.h
+// @description Definitions to simplify programming the dsPIC30F3013.
+//
+// @author Steven Bell <steven.bell@student.oc.edu>
+// @version 12.18.2008
+//
+// Last revision: 01.14.2009 - SB
+// 	              05.28.2009 - Pat Smith, updated for actual pin numbers
+//
 
 #include <p30f3013.h>
 

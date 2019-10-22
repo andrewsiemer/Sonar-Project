@@ -2,15 +2,17 @@
 // @description Useful functions for programming the dsPIC30F3013
 // 
 // @authors Andrew Siemer <andrew.siemer@eagles.oc.edu>,
-// @version 10.19.19 
+// @version 10.22.19 
+//
+// Based on a version from Engineering Fundamentals [ENGR-1242]
+// @credit Steven Bell <steven.bell@student.oc.edu>,
+//         Nick Little <nicklaus.little@alum.oc.edu>
 //
 
 #include <uart.h>
 #include <stdarg.h>
 #include <adc12.h>
-#include <p30fxxxx.h> //?
-
-#include <stdio.h> //to resolve printf error
+#include <stdio.h>
 #include <p30f3013.h>
 #include "definitions.h"
 #include "aliases.h"
@@ -131,26 +133,16 @@ int getAnalogValue(unsigned int channel) {
   return(result);
 }
 
-/* simulate a halt by providing a
- * function that never returns..
- *
- * not really a 'halt'... but the program won't
- * reset either!
+/* 
+ * Begin LCD library functions
  */
-void halt() {
-	while(1)
-		;
-}
-
-
 void LCD_GotoXY(uint8_t const ROW, uint8_t const COLUMN) {
   uint8_t address;
-  switch (ROW)
-  {
+  switch (ROW) {
     case 1: address = 0x00; break;
     case 2: address = 0x40; break;
-    case 3: address = 0x14; break;
-    case 4: address = 0x54; break;
+    case 3: address = 0x10; break;
+    case 4: address = 0x50; break;
     default: address = 0x00; break;
   }
   LCD_RS = LOW;
@@ -162,16 +154,15 @@ void LCD_GotoXY(uint8_t const ROW, uint8_t const COLUMN) {
 void LCD_Init(void) {
   __delay32(100);
   LCD_RS = LOW;
-  LCD_Pulse_Nibble(0x03); // wake up
+  LCD_Pulse_Nibble(0x03);
   __delay32(80);
-  //__delay_us(80);
-  LCD_Pulse_Nibble(0x03); // no really, wake up
+  LCD_Pulse_Nibble(0x03); 
   __delay32(80);
-  LCD_Pulse_Nibble(0x03); // I mean it, WAKE UP!
+  LCD_Pulse_Nibble(0x03); 
   __delay32(80);
-  LCD_Pulse_Nibble(0x02); // 4-bit interface
+  LCD_Pulse_Nibble(0x02); 
   __delay32(80);
-  LCD_Pulse_Char(0x28); // 4bit, 2line, 5x8 dots
+  LCD_Pulse_Char(0x28); 
   LCD_Pulse_Char(0x04); 
   LCD_Pulse_Char(0x85);
   LCD_Pulse_Char(0x06);
@@ -205,8 +196,7 @@ void LCD_Write_String (char const * TEXT) {
   LCD_RS = HIGH;
   LCD_RW = LOW;
 
-  for (loop = 0; TEXT[loop] != '\0'; loop++)
-  {
+  for (loop = 0; TEXT[loop] != '\0'; loop++) {
     LCD_Pulse_Char(TEXT[loop]);
   }
 }
@@ -214,4 +204,20 @@ void LCD_Write_String (char const * TEXT) {
 void LCD_Write_XY (uint8_t const ROW, uint8_t const COLUMN, char const * TEXT) {
   LCD_GotoXY(ROW, COLUMN);
   LCD_Write_String(TEXT);
+}
+
+void LCD_Clear (void) {
+  LCD_Pulse_Char(0x01);
+  __delay32(6);
+}
+
+/* simulate a halt by providing a
+ * function that never returns..
+ *
+ * not really a 'halt'... but the program won't
+ * reset either!
+ */
+void halt(void) {
+  while(1)
+    ;
 }
