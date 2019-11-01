@@ -1,7 +1,6 @@
 # Ignore Apple hidden files
 .DS_Store
-._.DS_Store
-._.gitignore
+._*
 
 # Ignore build files
 build/
