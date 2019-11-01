@@ -4,8 +4,11 @@
 // @author Steven Bell <steven.bell@student.oc.edu>
 // @version 12.18.2008
 //
-// Last revision: 01.14.2009 - SB
-// 	              05.28.2009 - Pat Smith, updated for actual pin numbers
+// -------------------------------------------------------------------------
+// @history
+// 01.14.2009 - SB
+// 05.28.2009 - Pat Smith, updated for actual pin numbers
+// -------------------------------------------------------------------------
 //
 
 #include <p30f3013.h>
