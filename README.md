@@ -16,6 +16,4 @@ A systems project for Analog Electronics ELEC-3303 (Fall 2019). The project is t
 - Griffen Cornell - *Receiver Design*
 
 ## Acknowledgments
-*aliases.h*, *utilities.h*, *utilities.c* are based on versions from Engineering Fundamentals [ENGR-1242]
-- Steven Bell - *aliases.h*, *utilities.h*, *utilities.c*
-- Nick Little - *utilities.h*, *utilities.c*
+*aliases.h* is based on a version from Engineering Fundamentals [ENGR-1242]
