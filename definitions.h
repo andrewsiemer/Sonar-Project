@@ -2,7 +2,7 @@
 // @description A convenient place for all program definitions.
 // 
 // @author Andrew Siemer <andrew.siemer@eagles.oc.edu>
-// @version 10.19.19
+// @version 11.1.19
 //
 
 #ifndef DEFINITIONS_H_
@@ -13,8 +13,8 @@
  */
 #define ON 1
 #define OFF 0
-#define LOW 0
-#define HIGH 1
+
+#define runState digInput3
 
 #define LCD_RS digOutput22  //_LATF4
 #define LCD_RW digOutput16  //_LATF6
