@@ -2,11 +2,7 @@
 // @description Useful functions for programming the dsPIC30F3013.
 // 
 // @authors Andrew Siemer <andrew.siemer@eagles.oc.edu>,
-// @version 10.22.19 
-//
-// Based on a version from Engineering Fundamentals [ENGR-1242]
-// @credit Steven Bell <steven.bell@student.oc.edu>,
-//         Nick Little <nicklaus.little@alum.oc.edu>
+// @version 11.1.19 
 //
 
 #include <stdint.h>
@@ -20,10 +16,6 @@
 
 /* Debugging functions */
 void initializeUART(void);  //Initializes the UART for serial communication
-
-/* ADC functions */
-int getAnalogValue(unsigned int channel);
-
 
 /* Timer functions */
 void pause(unsigned int);
