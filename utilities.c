@@ -2,8 +2,17 @@
 // @description Useful functions for programming the dsPIC30F3013
 // 
 // @authors Andrew Siemer <andrew.siemer@eagles.oc.edu>,
-// @version 11.1.19 
+// @version 11.5.19 
 //
+	
+//#include <stdarg.h>		
+//#include <adc12.h>		
+//#include <stdio.h>			
+//#include <stdint.h>				
+//include <stdlib.h>
+//#include <string.h>	
+#include <libpic30.h>
+#include <p30f3013.h>
 
 #include <uart.h>
 #include "definitions.h"
@@ -53,26 +62,32 @@ void LCD_GotoXY(uint8_t const ROW, uint8_t const COLUMN) {
 }
 
 void LCD_Init(void) {
-  __delay32(100);
+  /* Wait a bit after power-up */
+  pause(200);
   LCD_RS = 0;
-  LCD_Pulse_Nibble(0x03);
-  __delay32(80);
+  
+  /* Initialize LCD to 4-bit mode */
   LCD_Pulse_Nibble(0x03); 
-  __delay32(80);
+  pause(50);
   LCD_Pulse_Nibble(0x03); 
-  __delay32(80);
-  LCD_Pulse_Nibble(0x02); 
-  __delay32(80);
-  LCD_Pulse_Char(0x28); 
+  pause(10);
+  LCD_Pulse_Nibble(0x03); 
+  pause(10);
+  
+  /* Function Set */
+  LCD_Pulse_Nibble(0x02); //set program mode
+  pause(10);
+  LCD_Pulse_Char(0x28); //set functions
   LCD_Pulse_Char(0x04); 
   LCD_Pulse_Char(0x85);
   LCD_Pulse_Char(0x06);
   LCD_Pulse_Char(0x02);
-  __delay32(3);
-  LCD_Pulse_Char(0x0C);
-  LCD_Pulse_Char(0x01);
-  __delay32(6);
+  pause(5);
   
+  /* Clear Display */
+  LCD_Pulse_Char(0x0C); 
+  LCD_Pulse_Char(0x01);
+  pause(10);
   LCD_Clear();
 }
 
@@ -109,8 +124,8 @@ void LCD_Write_XY (uint8_t const ROW, uint8_t const COLUMN, char const * TEXT) {
 }
 
 void LCD_Clear (void) {
-     printf("Clear display.\n");
-    char const * TEXT = "       ";
+    printf("Clear display.\n");
+    char const * TEXT = "                ";
     LCD_Write_XY(1, 0, TEXT);
     LCD_Write_XY(2, 0, TEXT);
     LCD_Write_XY(3, 0, TEXT);
