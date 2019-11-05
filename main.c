@@ -2,7 +2,7 @@
 // @description Sonar Project - Analog Electronics (Fall 2019)
 // 
 // @author Andrew Siemer <andrew.siemer@eagles.oc.edu>
-// @version 11.1.19
+// @version 11.5.19
 //
 
 #include <p30f3013.h>
@@ -11,31 +11,25 @@
 #include "definitions.h"
 
 int main() {
+  pause(1000);
   initializeUART();
   setupPins();
   LCD_Init();
-  pause(2000);
+  pause(1000);
   printf("Writing to display...\n");
 
-  char const * TEXT = "hello world";
-  LCD_Write_XY(1, 0, TEXT);
-  TEXT = "line 2";
-  LCD_Write_XY(2, 0, TEXT);
-  TEXT = "line 3 ";
-  LCD_Write_XY(3, 0, TEXT);
-  TEXT = "line 4";
-  LCD_Write_XY(4, 0, TEXT);
- 
-  pause(3000);
-  
-  if (runState)
+  char const * TEXT;  
+  while(1) {
+    if (runState)
       TEXT = "Program Run";
-  else
+     else
       TEXT = "Idle State";  
-  LCD_Clear();
-  LCD_Write_XY(2, 0, TEXT);
+    LCD_Clear();
+    LCD_Write_XY(2, 0, TEXT);
+    pause(1000);
+  }
   
-  halt();
+  //halt();
   return (0);
 }
 
