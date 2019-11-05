@@ -2,7 +2,7 @@
 // @description Useful functions for programming the dsPIC30F3013.
 // 
 // @authors Andrew Siemer <andrew.siemer@eagles.oc.edu>,
-// @version 11.1.19 
+// @version 11.5.19 
 //
 
 #include <stdint.h>
@@ -19,6 +19,8 @@ void initializeUART(void);  //Initializes the UART for serial communication
 
 /* Timer functions */
 void pause(unsigned int);
+
+/* LCD functions */
 void LCD_GotoXY(uint8_t const ROW, uint8_t const COLUMN);
 void LCD_Init(void);
 void LCD_Pulse_Char(uint8_t const CHARACTER);
@@ -26,6 +28,8 @@ void LCD_Pulse_Nibble(uint8_t const NIBBLE);
 void LCD_Write_String (char const * TEXT);
 void LCD_Write_XY (uint8_t const ROW, uint8_t const COLUMN, char const * TEXT);
 void LCD_Clear(void);
+
+/* Global functions */
 void halt(void);
 
 #endif
