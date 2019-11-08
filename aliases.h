@@ -8,6 +8,7 @@
 // @history
 // 01.14.2009 - SB
 // 05.28.2009 - Pat Smith, updated for actual pin numbers
+// 11.6.2019 - Andrew Siemer, refactor
 // -------------------------------------------------------------------------
 //
 
@@ -38,7 +39,6 @@
 #define pin25Direction TRISBbits.TRISB7 //pin 25
 #define pin26Direction TRISBbits.TRISB6 //pin 26
 
-
 //Aliases for setting the TRISx bits above
 #define INPUT 1
 #define OUTPUT 0
@@ -52,7 +52,6 @@
 #define pin7Type ADPCFGbits.PCFG5 //pin 7
 #include <stdio.h> //to resolve printf error
 #include <p30f3013.h>
-
 
 //Aliases to refer to the pins when setting them as inputs or outputs
 //The TRISx registers control the pin direction (1 makes it an input)
@@ -79,7 +78,6 @@
 #define pin25Direction TRISBbits.TRISB7 //pin 25
 #define pin26Direction TRISBbits.TRISB6 //pin 26
 
-
 //Aliases for setting the TRISx bits above
 #define INPUT 1
 #define OUTPUT 0
@@ -102,7 +100,7 @@
 #define DIGITAL 1
 #define ANALOG 0
 
-//Digital outputs
+/* Digital outputs */
 //The LATx registers control the output value
 //Note that these only work when the corresponding pin is set as an output
 #define digOutput2 LATBbits.LATB0 //pin 2
@@ -128,8 +126,7 @@
 #define digOutput25 LATBbits.LATB7 //pin 25
 #define digOutput26 LATBbits.LATB6 //pin 26
 
-
-//Digital inputs
+/* Digital inputs */
 //The PORTx registers are used to read the pin input values
 //Note that these only work when the corresponding pin is set as an input
 #define digInput2 PORTBbits.RB0 //pin 2
@@ -155,7 +152,7 @@
 #define digInput25 PORTBbits.RB7 //pin 25
 #define digInput26 PORTBbits.RB6 //pin 26
 
-//Analog inputs
+/* Analog inputs */
 //These are pin aliases for the ADC channels
 #define analogInput2 0 //pin 2
 #define analogInput3 1 //pin 3
