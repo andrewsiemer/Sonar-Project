@@ -2,20 +2,20 @@
 // @description A convenient place for all program definitions.
 // 
 // @author Andrew Siemer <andrew.siemer@eagles.oc.edu>
-// @version 11.1.19
+// @version 11.8.19
 //
 
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-/**
- * constants
- */
+/* Constants */
 #define ON 1
 #define OFF 0
 
+/* State Switch */
 #define runState digInput3
 
+/* LCD Pins */
 #define LCD_RS digOutput22  //_LATF4
 #define LCD_RW digOutput16  //_LATF6
 #define LCD_EN digOutput21  //_LATF5
@@ -24,9 +24,8 @@
 #define LCD_DB6 digOutput25 //_LATB7
 #define LCD_DB7 digOutput26 //_LATB6
 
-/*
- * function definitions
- */
+/* Function Definitions */
 void setupPins();
+void displayBootScreen();
 
 #endif /* DEFINITIONS_H_ */
