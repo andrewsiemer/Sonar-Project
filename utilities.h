@@ -2,7 +2,7 @@
 // @description Useful functions for programming the dsPIC30F3013.
 // 
 // @authors Andrew Siemer <andrew.siemer@eagles.oc.edu>,
-// @version 11.5.19 
+// @version 11.8.19 
 //
 
 #include <stdint.h>
@@ -29,7 +29,7 @@ void LCD_Write_String (char const * TEXT);
 void LCD_Write_XY (uint8_t const ROW, uint8_t const COLUMN, char const * TEXT);
 void LCD_Clear(void);
 
-/* Global functions */
-void halt(void);
+/* ADC functions */
+int getAnalogValue(unsigned int channel);
 
 #endif
