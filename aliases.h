@@ -8,7 +8,7 @@
 // @history
 // 01.14.2009 - SB
 // 05.28.2009 - Pat Smith, updated for actual pin numbers
-// 11.6.2019 - Andrew Siemer, refactor
+// 11.15.2019 - Andrew Siemer, style
 // -------------------------------------------------------------------------
 //
 
