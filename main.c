@@ -2,7 +2,7 @@
 // @description Sonar Project - Analog Electronics (Fall 2019)
 // 
 // @author Andrew Siemer <andrew.siemer@eagles.oc.edu>
-// @version 11.8.19
+// @version 11.15.19
 //
 
 #include <p30f3013.h>
@@ -12,69 +12,110 @@
 #include "definitions.h"
 
 int main() {
-  pause(1000);
-  initializeUART();
-  setupPins();
-  LCD_Init();
-  pause(50);
-  displayBootScreen();
-  pause(3000);
+   initializeUART();
+   setupPins();
+   initializeLCD();
+   displayBootScreen();
+   delay(2500);
   
-  char const * TEXT;
-  while(1) {
-    int a = getAnalogValue(3);
-    printf("%i\n", a);
-    LCD_Clear();
-    if (runState) {
-      TEXT = "*SENSING*";
-      LCD_Write_XY(1, 3, TEXT);
-      TEXT = "Distance:"; 
-      LCD_Write_XY(2, 0, TEXT);
-      TEXT = "Averaging:"; 
-      LCD_Write_XY(4, 0, TEXT);
-    }
-     else {
-      TEXT = "*IDLE*"; 
-      LCD_Write_XY(1, 5, TEXT);
-      TEXT = "Toggle State"; 
-      LCD_Write_XY(2, 2, TEXT);
-      TEXT = "Switch to Begin"; 
-      LCD_Write_XY(3, 0, TEXT);
-      TEXT = "Sensing"; 
-      LCD_Write_XY(4, 4, TEXT);
-     }
-    pause(1000);
-  }
+   //startPinTimer12();
+   while(1) {
+      //printf("%d\r\n", readPinTimer12());
+    
+      //static char str[1];
+      //sprintf(str, "%d", num);
+     
+      if (sensingState) {
+         transmitterState = 1; //turn on transmitter
+         displaySensingScreen();
+        
+         while(sensingState) {
+            writeToLCDXY(4, 11, getPotValue());
+            delay(100); //display refresh delay
+         }
+      }
+      else {
+         transmitterState = 0; //turn off transmitter
+         displayIdleScreen();
+      
+         while (!sensingState) {
+            ;
+         }
+      }
+      delay(10);
+   }
 
-  return (0);
+   return (0);
 }
 
 void displayBootScreen() {
-  char const * TEXT;
-  LCD_Clear();
-  TEXT = "Sonar";
-  LCD_Write_XY(2, 5, TEXT);
-  TEXT = "Ranging";
-  LCD_Write_XY(3, 4, TEXT);
-  TEXT = "...";
-  LCD_Write_XY(4, 13, TEXT);
+   clearLCD();
+  
+   char const * TEXT = "Sonar";
+   writeToLCDXY(2, 5, TEXT);
+   TEXT = "Ranging";
+   writeToLCDXY(3, 4, TEXT);
+   TEXT = "...";
+   writeToLCDXY(4, 13, TEXT);
+}
+
+void displayIdleScreen() {
+   clearLCD();
+  
+   char const * TEXT = "*IDLE*"; 
+   writeToLCDXY(1, 5, TEXT);
+   TEXT = "Toggle State"; 
+   writeToLCDXY(2, 2, TEXT);
+   TEXT = "Switch to Begin"; 
+   writeToLCDXY(3, 0, TEXT);
+   TEXT = "Sensing"; 
+   writeToLCDXY(4, 4, TEXT);
+}
+
+void displaySensingScreen() {
+   clearLCD();
+  
+   char const * TEXT = "*SENSING*";
+   writeToLCDXY(1, 3, TEXT);
+   TEXT = "Distance:"; 
+   writeToLCDXY(2, 0, TEXT);
+   TEXT = "Averaging:"; 
+   writeToLCDXY(4, 0, TEXT);
+}
+
+char const * getPotValue() {
+   int i = getAnalogValue(0); //get ADC value on Pin 2 (AN0)
+   static char const * AVERAGING;
+  
+   if (i > 2800)
+      AVERAGING = "HIGH";
+   else if (i > 1400)
+      AVERAGING = "LOW ";
+   else
+      AVERAGING = "OFF ";
+    
+   return AVERAGING;
 }
 
 void setupPins() {
-  /* State Switch */
-  pin3Direction = INPUT; 
-  pin3Type = DIGITAL;
+   /* State Switch */
+   pin3Direction = INPUT; 
+   pin3Type = DIGITAL;
+   
+   /* Transmitter State */
+   pin4Direction = OUTPUT;
+   pin4Type = DIGITAL;
   
-  /* LCD Display */
-  pin23Type = DIGITAL; 
-  pin24Type = DIGITAL; 
-  pin25Type = DIGITAL; 
-  pin26Type = DIGITAL;
-  pin16Direction = OUTPUT;
-  pin21Direction = OUTPUT; 
-  pin22Direction = OUTPUT; 
-  pin23Direction = OUTPUT; 
-  pin24Direction = OUTPUT; 
-  pin25Direction = OUTPUT; 
-  pin26Direction = OUTPUT; 
+   /* LCD Display */
+   pin23Type = DIGITAL; 
+   pin24Type = DIGITAL; 
+   pin25Type = DIGITAL; 
+   pin26Type = DIGITAL;
+   pin16Direction = OUTPUT;
+   pin21Direction = OUTPUT; 
+   pin22Direction = OUTPUT; 
+   pin23Direction = OUTPUT; 
+   pin24Direction = OUTPUT; 
+   pin25Direction = OUTPUT; 
+   pin26Direction = OUTPUT; 
 }

@@ -2,7 +2,7 @@
 // @description A convenient place for all program definitions.
 // 
 // @author Andrew Siemer <andrew.siemer@eagles.oc.edu>
-// @version 11.8.19
+// @version 11.15.19
 //
 
 #ifndef DEFINITIONS_H_
@@ -13,7 +13,10 @@
 #define OFF 0
 
 /* State Switch */
-#define runState digInput3
+#define sensingState digInput3
+
+/* Transmitter State */
+#define transmitterState digOutput4
 
 /* LCD Pins */
 #define LCD_RS digOutput22  //_LATF4
@@ -27,5 +30,8 @@
 /* Function Definitions */
 void setupPins();
 void displayBootScreen();
+void displayIdleScreen();
+void displaySensingScreen();
+char const * getPotValue();
 
 #endif /* DEFINITIONS_H_ */
