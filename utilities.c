@@ -2,7 +2,7 @@
 // @description Useful functions for programming the dsPIC30F3013
 // 
 // @author Andrew Siemer <andrew.siemer@eagles.oc.edu>,
-// @version 11.15.19 
+// @version 12.6.19 
 //
 	
 #include <stdarg.h>		
@@ -221,7 +221,7 @@ int getAnalogValue(unsigned int channel) {
  * calling startPinTimer, Timer1 will count on each instruction cycle that
  * pin 12 is high.
  */
-void startPinTimer12(void) {
+void resetRecieverTrigger(void) {
    // Reset Timer 1
    TMR1 = 0;
 
@@ -236,14 +236,38 @@ void startPinTimer12(void) {
    T1CONbits.TON = 1;
 }
 
-void stopPinTimer12(void) {
-   T1CONbits.TON = 0;
-}
-
 /* Use this function to read the the number of instruction clock cycles in the
  * Timer 1 register.  When called after startPinTimer, it will return the number
  * of cycles that pin 9 was high.
  */
-int readPinTimer12(void) {
+int readRecieverTrigger(void) {
    return(TMR1);
 }
+
+void startDelayTimer(void)
+ {
+   // Reset Timer 1
+   TMR2 = 0;
+
+    // Set up the timer to use "gated accumulation mode"
+   // See section 12.4.5 of the dsPIC30F manual for more info.
+   T2CONbits.TGATE = 0;
+
+    // Use internal clock as the timer source
+   T2CONbits.TCS = 0;
+
+    // Turn on the timer
+   T2CONbits.TON = 1;
+
+  }
+
+  void stopDelayTimer(void)
+ {
+ 	T2CONbits.TON = 0;
+ }
+
+  int readDelayTimer(void)
+ {
+   return(TMR2);
+ }
+
